@@ -204,6 +204,23 @@ button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(53,99,24
 
 .icon-btn:hover { background:rgba(255,255,255,0.3); transform:scale(1.1); }
 
+.file-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 25px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.file-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: #5b7dff;
+  box-shadow: 0 8px 18px rgba(53,99,247,0.2);
+}
+
 #toastContainer {
   position:fixed;
   top:20px;
