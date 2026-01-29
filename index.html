@@ -23,16 +23,15 @@
           <input type="file" id="fileInput" accept="image/*" class="input">
         </div>
         <div class="field">
-          <label class="field__label">Or Capture from Camera</label>
-          <button id="cameraBtn" class="btn btn--primary">Open Camera</button>
+          <button id="cameraBtn" class="btn btn--primary">Capture from Camera</button>
         </div>
       </div>
 
-      <div class="card" id="previewCard">
+      <div class="preview-card" id="previewCard">
         <img id="preview" alt="Preview will appear here">
       </div>
 
-      <div class="card">
+      <div class="result-card">
         <button id="extractBtn" class="btn btn--primary">Extract Text</button>
         <div class="result" aria-hidden="true">
           <div class="result__meta">
@@ -43,15 +42,14 @@
         </div>
       </div>
 
-      <p class="card__footer">100% client-side, no data uploaded.</p>
+      <p class="card__footer">100% client-side. No data uploaded.</p>
     </div>
   </div>
 
+  <div id="toastContainer"></div>
+
   <div class="camera-modal" aria-hidden="true" id="cameraModal">
-    <video id="qrVideo" autoplay playsinline></video>
-    <div class="scan-overlay">
-      <div class="scan-frame"></div>
-    </div>
+    <video id="cameraVideo" autoplay playsinline></video>
     <div class="camera-controls">
       <button id="captureBtn" class="icon-btn">📸</button>
       <button id="closeCamera" class="icon-btn">✖️</button>
