@@ -1,10 +1,9 @@
 const logoImg = document.querySelector('.logo');
 const logoCount = 7;
-const randomIndex = Math.floor(Math.random() * logoCount) + 1;
-logoImg.src = `cat${randomIndex}.gif`;
+logoImg.src = `cat${Math.floor(Math.random()*logoCount)+1}.gif`;
 
 const fileInput = document.getElementById('fileInput');
-const preview = document.createElement('img'); // hidden preview
+const preview = document.createElement('img');
 preview.style.display='none';
 document.body.appendChild(preview);
 
@@ -36,13 +35,17 @@ function showToast(msg,type='error'){
 
 fileBtn.addEventListener('click',()=>fileInput.click());
 
-fileInput.addEventListener('change',e=>{
-  const file=e.target.files[0];
+function handleImage(file){
   if(!file) return;
   if(!file.type.startsWith('image/')) return showToast('Invalid file type.');
-  imageSrc=URL.createObjectURL(file);
-  preview.src=imageSrc;
-});
+  if(imageSrc.startsWith('blob:')) URL.revokeObjectURL(imageSrc);
+  imageSrc = URL.createObjectURL(file);
+  preview.src = imageSrc;
+  resultContainer.setAttribute('aria-hidden','true');
+  resultText.textContent = '';
+}
+
+fileInput.addEventListener('change',e=>handleImage(e.target.files[0]));
 
 document.addEventListener('paste', e=>{
   const items=(e.clipboardData||e.originalEvent.clipboardData).items;
@@ -50,8 +53,7 @@ document.addEventListener('paste', e=>{
   for(const item of items){
     if(item.type.indexOf('image')!==-1){
       const blob=item.getAsFile();
-      imageSrc=URL.createObjectURL(blob);
-      preview.src=imageSrc;
+      handleImage(blob);
       e.preventDefault();
       return;
     }
@@ -74,8 +76,7 @@ captureBtn.addEventListener('click',()=>{
   canvas.width=cameraVideo.videoWidth;
   canvas.height=cameraVideo.videoHeight;
   canvas.getContext('2d').drawImage(cameraVideo,0,0);
-  imageSrc=canvas.toDataURL('image/png');
-  preview.src=imageSrc;
+  handleImage(canvas.toDataURL('image/png'));
   stopCamera();
 });
 
@@ -86,16 +87,19 @@ function stopCamera(){
   if(stream) stream.getTracks().forEach(t=>t.stop());
 }
 
-extractBtn.addEventListener('click',()=>{
+extractBtn.addEventListener('click', async ()=>{
   if(!imageSrc) return showToast('Please select or capture an image.');
+  extractBtn.disabled = true;
   resultContainer.setAttribute('aria-hidden','true');
   resultText.textContent='Processing...';
-  Tesseract.recognize(imageSrc,'eng',{logger:m=>console.log(m)})
-    .then(({data:{text}})=>{
-      resultText.textContent=text.trim()||'No text detected.';
-      resultContainer.setAttribute('aria-hidden','false');
-    })
-    .catch(()=>showToast('Failed to extract text.'));
+  try{
+    const { data: { text } } = await Tesseract.recognize(imageSrc,'eng',{logger:m=>console.log(m)});
+    resultText.textContent = text.trim()||'No text detected.';
+    resultContainer.setAttribute('aria-hidden','false');
+  }catch{
+    showToast('Failed to extract text.');
+  }
+  extractBtn.disabled = false;
 });
 
 copyBtn.addEventListener('click',()=>{
