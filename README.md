@@ -1,5 +1,7 @@
 # Image to Text Tool (Client-Side)
 
+![Logo](cat1.gif)
+
 A modern, fully client-side web application to extract text from images. Supports file upload, pasting images, and capturing images from your camera. No data is uploaded—100% processed in your browser.
 
 ## Features
@@ -17,14 +19,6 @@ A modern, fully client-side web application to extract text from images. Support
 ## Demo
 
 **[Click me!](https://itt.bbnerds.com)**
-
-## Installation
-
-1. Clone or download the repository:
-
-```bash
-git clone https://github.com/malindiboys/image-to-text-tool.git
-cd image-to-text-tool
 
 
 ## Usage
@@ -46,3 +40,11 @@ cd image-to-text-tool
 - All processing is client-side; no data is sent to a server.
 - Works in modern browsers with camera access support.
 - For best results, use high-contrast images with clear text.
+
+## Installation
+
+1. Clone or download the repository:
+
+```bash
+git clone https://github.com/malindiboys/image-to-text-tool.git
+cd image-to-text-tool
